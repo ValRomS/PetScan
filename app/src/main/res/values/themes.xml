@@ -1,0 +1,34 @@
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Base application theme. -->
+    <style name="Base.Theme.PetScanQR" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <!-- Customize your light theme here. -->
+        <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/petscanqr_color_background_medium</item>
+        <item name="colorPrimaryDark">@color/petscanqr_color_background_hard</item>
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.PetScanQR" parent="Base.Theme.PetScanQR" />
+
+    <style name="SplashTheme" parent="Theme.SplashScreen">
+        <item name="android:windowBackground">@drawable/petscan_splashscreen</item>
+        <item name="android:windowFullscreen">true</item>
+        <item name="android:windowContentOverlay">@null</item>
+        <item name="postSplashScreenTheme">@style/Base.Theme.PetScanQR</item>
+    </style>
+
+    <style name="circularImageView" parent="">
+        <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="NavDrawerTextStyle">
+        <item name="android:textColor">@color/petscanqr_color_background</item>
+    </style>
+
+    <style name="NavDrawerIconStyle">
+        <item name="android:tint">@color/petscanqr_color_background</item>
+    </style>
+
+
+</resources>

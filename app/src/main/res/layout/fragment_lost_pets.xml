@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/white"
+    tools:context=".LostPetsFragment"
+    android:orientation="vertical"
+    android:layout_margin="25dp">
+
+    <!-- Material Design SearchView -->
+    <androidx.appcompat.widget.SearchView
+        android:id="@+id/searchView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:defaultQueryHint="@string/search_city"
+        android:iconifiedByDefault="false"
+        app:searchIcon="@drawable/ic_location"
+        app:iconifiedByDefault="false"
+        android:background="@drawable/search_view_background"
+        android:padding="8dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginStart="16dp"
+        android:outlineAmbientShadowColor="@android:color/darker_gray"
+        android:outlineSpotShadowColor="@android:color/darker_gray"/>
+
+    <!-- Texto para mostrar información (puedes personalizar según tus necesidades) -->
+    <TextView
+        android:id="@+id/infoTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/searchView"
+        android:layout_marginTop="8dp"
+        android:layout_marginStart="20dp"
+        android:text="Resultados de búsqueda:"
+        android:textSize="16sp" />
+
+    <!-- RecyclerView para mostrar las mascotas -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewLostPets"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/infoTextView"
+        android:layout_marginTop="20dp" />
+
+</LinearLayout>

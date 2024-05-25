@@ -1,0 +1,72 @@
+<resources>
+    <string name="app_name">PetScanQR</string>
+    <string name="btnLogin">Login</string>
+    <string name="btnRegister">Registrar</string>
+    <string name="btnScan">Escanear</string>
+
+    <string name="correoElectronico">Correo Electronico</string>
+    <string name="contraseña">Contraseña</string>
+    <string name="registrateAqui">No tienes una cuenta? Registrate aquí</string>
+    <string name="olvidoContraseña">Olvide mi contraseña</string>
+    <string name="name">Nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="mobile_number">Numero celular</string>
+    <string name="city">Ciudad</string>
+    <string name="estatus_localizada">Localizada</string>
+    <string name="estatus_desaparecida">Desaparecida</string>
+
+    <string name="pets">Mascotas</string>
+    <string name="scan">Escanear</string>
+    <string name="lost_pets">Mascotas perdidas</string>
+    <string name="configuration">Configuracion</string>
+    <string name="log_out">Cerrar sesion</string>
+    <string name="generateQR">Generar QR</string>
+
+    <string name="navigation_drawer_open">Abrir</string>
+    <string name="navigation_drawer_close">Cerrar</string>
+    <string name="agregar_mascota">Agregar Mascota</string>
+    <string name="editar_mascota">Editar Mascota</string>
+    <string name="type_pet">Tipo de mascota</string>
+    <string name="raza">Raza</string>
+    <string name="sex">Sexo</string>
+    <string name="age">Edad</string>
+    <string name="save">Guardar</string>
+    <string name="localizado">Localizado</string>
+    <string name="extraviado">Extraviado</string>
+    <string name="message">Mensajes</string>
+    <string name="note">Nota</string>
+    <string name="noteString">Aquí puedes proporcionar informacion adicional de tu mascota (sentimientos, sensaciones, cuidados, etc)</string>
+    <string name="datos">Datos</string>
+    <string name="edit">Editar</string>
+    <string name="delete">Eliminar</string>
+    <string name="email">Email</string>
+    <string name="apellido">Apellido</string>
+    <string name="downloadQR">Descargar QR</string>
+    <string name="downloadQNotifyTittle">Descargando QR Code</string>
+    <string name="downloadQNotifyBody">Tu QR Code se está descargando</string>
+    <string name="downloadQNotifyCompleteTittle">Descarga completada</string>
+    <string name="downloadQNotifyCompleteBody">Tu QR Code se ha descargado correctamente</string>
+    <string name="contactOwner">Contactar al dueño</string>
+    <string name="scan_pet">Mascotas escaneadas</string>
+    <string name="messageChat">Hola, he encontrado a tu mascota</string>
+    <string name="search_city">Buscar ciudad</string>
+    <string name="perdido_hace">Perdido hace</string>
+    <string name="dias">Dias</string>
+
+    <string-array name="opciones_tipo_mascota">
+        <item>Perro</item>
+        <item>Gato</item>
+        <item>Pájaro</item>
+    </string-array>
+
+    <string-array name="opciones_sexo">
+        <item>Macho</item>
+        <item>Hembra</item>
+    </string-array>
+
+    <string-array name="opciones_sexo_usuario">
+        <item>M</item>
+        <item>F</item>
+    </string-array>
+
+</resources>

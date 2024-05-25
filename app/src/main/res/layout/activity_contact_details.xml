@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <com.google.android.material.imageview.ShapeableImageView
+        android:id="@+id/mascotaImageView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHeight_percent="0.33"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:id="@+id/degradadoView"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@drawable/degradado_azul_vertical"
+        app:layout_constraintBottom_toBottomOf="@id/mascotaImageView"
+        app:layout_constraintEnd_toEndOf="@id/mascotaImageView"
+        app:layout_constraintStart_toStartOf="@id/mascotaImageView"
+        app:layout_constraintTop_toTopOf="@id/mascotaImageView" />
+
+    <TextView
+        android:id="@+id/tvNombre"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginBottom="12dp"
+        android:text="@string/name"
+        android:textColor="@color/white"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="@id/mascotaImageView"
+        app:layout_constraintStart_toStartOf="@id/mascotaImageView" />
+
+
+    <LinearLayout
+        android:id="@+id/fondoBlanco"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/petscanqr_color_background_hard"
+        android:orientation="vertical"
+        android:padding="30dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/mascotaImageView">
+
+
+        <!--rectángulo estatus-->
+        <LinearLayout
+            android:id="@+id/rectangulo1"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/fondo_rectangulo_azul"
+            android:orientation="horizontal"
+            android:padding="16dp"
+            app:layout_constraintTop_toBottomOf="@+id/guideline">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Estatus: "
+                android:textColor="@color/white"
+                android:textSize="20sp" />
+
+            <TextView
+                android:id="@+id/tvEstatus"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/localizado"
+                android:textColor="@color/white"
+                android:textSize="25sp" />
+
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginTop="16dp"
+            android:padding="16dp"
+            android:background="@drawable/fondo_rectangulo_blanco">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/petscanqr_color_background_hard"
+                android:text="@string/datos"
+                android:textSize="25sp"
+                android:textStyle="bold"/>
+
+            <TextView
+                android:id="@+id/tvRaza"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvSexo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+            <TextView
+                android:id="@+id/tvDireccion"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"/>
+
+        </LinearLayout>
+
+
+        <!-- Botón mensajes -->
+        <com.google.android.material.button.MaterialButton
+            android:id="@+id/btnMensajes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:backgroundTint="@color/white"
+            android:textColor="@color/petscanqr_color_background_hard"
+            android:text="@string/contactOwner"
+            android:textAllCaps="false"
+            android:textSize="18sp"
+            app:icon="@drawable/ic_email"
+            app:iconTint="@color/petscanqr_color_background_hard"
+            app:iconGravity="end"
+            app:cornerRadius="20dp" />
+
+
+
+
+
+
+
+        </LinearLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

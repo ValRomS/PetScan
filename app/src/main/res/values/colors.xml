@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+    <color name="petscanqr_color_background">#1979FF</color>
+    <color name="petscanqr_color_background_medium">#23406D</color>
+    <color name="petscanqr_color_background_hard">#112752</color>
+    <color name="btnGreen">#7ED957</color>
+
+
+</resources>

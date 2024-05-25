@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group>
+        <item android:id="@+id/nav_item_mascotas"
+            android:icon="@drawable/ic_pets"
+            android:title="@string/pets"
+            />
+
+        <item android:id="@+id/nav_item_escanear"
+            android:icon="@drawable/ic_scan"
+            android:title="@string/scan"
+            />
+
+        <item android:id="@+id/nav_item_mascotasEscaneadas"
+            android:icon="@drawable/ic_watch"
+            android:title="@string/scan_pet"
+           />
+
+        <item android:id="@+id/nav_item_mascotasPerdidas"
+            android:icon="@drawable/ic_lost_pets"
+            android:title="@string/lost_pets"
+            />
+
+        <item android:id="@+id/nav_item_configuracion"
+            android:icon="@drawable/ic_settings"
+            android:title="@string/configuration"
+            />
+
+        <item android:id="@+id/nav_item_cerrarSesion"
+            android:icon="@drawable/ic_logout"
+            android:title="@string/log_out"
+            />
+    </group>
+</menu>
