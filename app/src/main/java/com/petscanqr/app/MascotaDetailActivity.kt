@@ -11,6 +11,8 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.petscanqr.app.databinding.ActivityMascotaDetailBinding
@@ -89,6 +91,9 @@ class MascotaDetailActivity : AppCompatActivity() {
     private fun mostrarDatosMascota(mascota: Mascota) {
         Glide.with(this@MascotaDetailActivity)
             .load(mascota.imageUrl)
+            .signature(ObjectKey(System.currentTimeMillis())) // Forzar la actualización de la imagen
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(binding.mascotaImageView)
 
         binding.tvNombre.text = mascota.nombre

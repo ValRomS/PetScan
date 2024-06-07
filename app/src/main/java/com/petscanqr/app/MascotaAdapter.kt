@@ -11,6 +11,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 
 class MascotaAdapter(private val mascotas: MutableList<com.petscanqr.app.dto.response.Mascota>, private val context: Context) : RecyclerView.Adapter<MascotaAdapter.MascotaViewHolder>() {
 
@@ -29,6 +31,9 @@ class MascotaAdapter(private val mascotas: MutableList<com.petscanqr.app.dto.res
 
         Glide.with(context)
             .load(mascota.imageUrl)
+            .signature(ObjectKey(System.currentTimeMillis())) // Forzar la actualización de la imagen
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .centerCrop()
             .into(holder.mascotaImagen)
     }

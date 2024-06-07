@@ -105,7 +105,7 @@ class QRCodeActivity : AppCompatActivity() {
     }
 
     private fun generateQRCode(mascotaId: String) {
-        val qrCodeText = mascotaId
+        val qrCodeText = "https://petscanqr.netlify.app/?id=$mascotaId"
 
         val qrCodeWriter = QRCodeWriter()
 
