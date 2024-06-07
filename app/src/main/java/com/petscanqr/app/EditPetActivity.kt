@@ -15,10 +15,17 @@ import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.SetOptions
 import com.google.firebase.storage.FirebaseStorage
 import com.petscanqr.app.databinding.ActivityEditPetBinding
+import com.petscanqr.app.dto.response.MascotaUpdate
+import com.petscanqr.app.dto.service.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class EditPetActivity : AppCompatActivity() {
 
@@ -109,7 +116,7 @@ class EditPetActivity : AppCompatActivity() {
         }
     }
 
-    private fun guardarDatosEnFirestore(imageUrl: String?) {
+    /*private fun guardarDatosEnFirestore(imageUrl: String?) {
         val mascotaMap = mutableMapOf<String, Any>()
 
         val nombre = binding.tilNombre.editText?.text.toString()
@@ -140,12 +147,57 @@ class EditPetActivity : AppCompatActivity() {
                 val errorMsg = "Error al actualizar: ${e.message}"
                 Toast.makeText(this@EditPetActivity, errorMsg, Toast.LENGTH_LONG).show()
             }
+    }*/
+
+    private fun guardarDatosEnFirestore(imageUrl: String?) {
+        val nombre = binding.tilNombre.editText?.text.toString()
+        val raza = binding.tilRaza.editText?.text.toString()
+        val edad = binding.tilEdad.editText?.text.toString().toIntOrNull() ?: 0
+        val nota = binding.tilNota.editText?.text.toString()
+        val tipo = binding.spinnerMascota.selectedItem.toString()
+        val sexo = binding.spinnerSexo.selectedItem.toString()
+
+        val mascotaUpdate = MascotaUpdate(
+            nombre = nombre,
+            raza = raza,
+            edad = edad,
+            nota = nota,
+            tipo = tipo,
+            sexo = sexo,
+            imageUrl = imageUrl
+        )
+
+        val call = RetrofitClient.instance.actualizarMascota(mascotaId ?: "", mascotaUpdate)
+        Log.e("idPetEd", "id: {$mascotaId}")
+        call.enqueue(object : Callback<Void> {
+            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                if (response.isSuccessful) {
+
+                    mostrarDatosMascota(mascota!!)
+                    val intent = Intent(this@EditPetActivity, MascotaDetailActivity::class.java)
+                    intent.putExtra("MASCOTA_ID", mascotaId)
+                    startActivity(intent)
+                    finish()
+                } else {
+                    Toast.makeText(this@EditPetActivity, "Error al actualizar la mascota: ${response.code()}", Toast.LENGTH_SHORT).show()
+                }
+            }
+
+            override fun onFailure(call: Call<Void>, t: Throwable) {
+                Toast.makeText(this@EditPetActivity, "Error al actualizar la mascota: ${t.message}", Toast.LENGTH_SHORT).show()
+            }
+        })
     }
+
+
 
     private fun mostrarDatosMascota(mascota: Mascota) {
         // Imagen
         Glide.with(this)
             .load(mascota.imageUrl)
+            .signature(ObjectKey(System.currentTimeMillis())) // Forzar la actualización de la imagen
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(binding.imageView)
 
         // Tipo de mascota

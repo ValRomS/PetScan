@@ -14,6 +14,13 @@ import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
+import com.google.gson.Gson
+import com.petscanqr.app.dto.response.FechaPerdido
+import com.petscanqr.app.dto.response.Mascota
+import com.petscanqr.app.dto.service.RetrofitClient
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import java.util.UUID
 
 
@@ -45,7 +52,7 @@ class AddPetActivity : AppCompatActivity() {
 
     }
 
-    private fun guardarMascotaEnDB() {
+    /*private fun guardarMascotaEnDB() {
         if (validarCampos()) {
             val userId = FirebaseAuth.getInstance().currentUser?.uid
 
@@ -97,7 +104,203 @@ class AddPetActivity : AppCompatActivity() {
                 Toast.makeText(this, "Error al obtener el ID del usuario.", Toast.LENGTH_SHORT).show()
             }
         }
+    }*/
+
+    /*private fun guardarMascotaEnDB() {
+        if (validarCampos()) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userId != null) {
+                val storageReference = FirebaseStorage.getInstance().reference
+                val filePath = storageReference.child("mascotas").child("${UUID.randomUUID()}.jpg")
+
+                if (!::uriDeLaImagen.isInitialized) {
+                    Toast.makeText(this, "Por favor, selecciona una imagen para la mascota.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                val edadMascota = binding.tilEdad.editText?.text.toString().trim().toIntOrNull() ?: 0
+
+                val uploadTask = filePath.putFile(uriDeLaImagen)
+                uploadTask.addOnSuccessListener {
+                    filePath.downloadUrl.addOnSuccessListener { uri ->
+
+                        val mascota = Mascota(
+                            ownerId = userId,
+                            tipo = binding.spinnerMascota.selectedItem.toString(),
+                            nombre = binding.tilNombre.editText?.text.toString().trim(),
+                            raza = binding.tilRaza.editText?.text.toString().trim(),
+                            sexo = binding.spinnerSexo.selectedItem.toString(),
+                            edad = edadMascota,
+                            estatus = "Localizada",
+                            imageUrl = uri.toString(),
+                            fechaPerdido = FechaPerdido()
+                        )
+
+                        *//*val gson = Gson()
+                        val mascotaJson = gson.toJson(mascota)*//*
+
+                        val call = RetrofitClient.instance.guardarMascota(mascota)
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+                                    val intent = Intent(this@AddPetActivity, HomeActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                    }
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Error al subir imagen: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            } else {
+                Toast.makeText(this, "Error al obtener el ID del usuario.", Toast.LENGTH_SHORT).show()
+            }
+        }
     }
+*/
+
+    /*private fun guardarMascotaEnDB() {
+        if (validarCampos()) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userId != null) {
+                if (!::uriDeLaImagen.isInitialized) {
+                    Toast.makeText(this, "Por favor, selecciona una imagen para la mascota.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                // Generar un ID único para la mascota en Firestore
+                val newMascotaRef = db.collection("mascotas").document()
+                val mascotaId = newMascotaRef.id
+
+                val storageReference = FirebaseStorage.getInstance().reference
+                val filePath = storageReference.child("mascotas").child("$mascotaId")
+
+                val edadMascota = binding.tilEdad.editText?.text.toString().trim().toIntOrNull() ?: 0
+
+                val uploadTask = filePath.putFile(uriDeLaImagen)
+                uploadTask.addOnSuccessListener {
+                    filePath.downloadUrl.addOnSuccessListener { uri ->
+
+                        val mascota = Mascota(
+                            id = mascotaId,  // Agrega el ID aquí
+                            ownerId = userId,
+                            tipo = binding.spinnerMascota.selectedItem.toString(),
+                            nombre = binding.tilNombre.editText?.text.toString().trim(),
+                            raza = binding.tilRaza.editText?.text.toString().trim(),
+                            sexo = binding.spinnerSexo.selectedItem.toString(),
+                            edad = edadMascota,
+                            estatus = "Localizada",
+                            imageUrl = uri.toString(),
+                            fechaPerdido = FechaPerdido()
+                        )
+
+                        // Guardar la mascota usando Retrofit
+                        val call = RetrofitClient.instance.guardarMascota(mascota)
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+
+                                            val intent = Intent(this@AddPetActivity, HomeActivity::class.java)
+                                            startActivity(intent)
+                                            finish()
+
+                                } else {
+                                    Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                    }
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Error al subir imagen: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            } else {
+                Toast.makeText(this, "Error al obtener el ID del usuario.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }*/
+
+    private fun guardarMascotaEnDB() {
+        if (validarCampos()) {
+            val userId = FirebaseAuth.getInstance().currentUser?.uid
+
+            if (userId != null) {
+                if (!::uriDeLaImagen.isInitialized) {
+                    Toast.makeText(this, "Por favor, selecciona una imagen para la mascota.", Toast.LENGTH_SHORT).show()
+                    return
+                }
+
+                // Generar un nuevo ID para la mascota
+                val mascotaId = db.collection("mascotas").document().id
+
+                val storageReference = FirebaseStorage.getInstance().reference
+                val filePath = storageReference.child("mascotas").child("$mascotaId")
+
+                val edadMascota = binding.tilEdad.editText?.text.toString().trim().toIntOrNull() ?: 0
+
+                val uploadTask = filePath.putFile(uriDeLaImagen)
+                uploadTask.addOnSuccessListener {
+                    filePath.downloadUrl.addOnSuccessListener { uri ->
+
+                        val mascota = Mascota(
+                            id = mascotaId,  // Usar el ID generado
+                            ownerId = userId,
+                            tipo = binding.spinnerMascota.selectedItem.toString(),
+                            nombre = binding.tilNombre.editText?.text.toString().trim(),
+                            raza = binding.tilRaza.editText?.text.toString().trim(),
+                            sexo = binding.spinnerSexo.selectedItem.toString(),
+                            edad = edadMascota,
+                            estatus = "Localizada",
+                            imageUrl = uri.toString(),
+                            fechaPerdido = FechaPerdido()
+                        )
+
+                        // Guardar la mascota usando Retrofit
+                        val call = RetrofitClient.instance.guardarMascota(mascota)
+                        call.enqueue(object : Callback<Void> {
+                            override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                                if (response.isSuccessful) {
+                                    val intent = Intent(this@AddPetActivity, HomeActivity::class.java)
+                                    startActivity(intent)
+                                    finish()
+                                } else {
+                                    Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${response.code()}", Toast.LENGTH_SHORT).show()
+                                }
+                            }
+
+                            override fun onFailure(call: Call<Void>, t: Throwable) {
+                                Toast.makeText(this@AddPetActivity, "Error al agregar la mascota: ${t.message}", Toast.LENGTH_SHORT).show()
+                            }
+                        })
+
+                    }
+                }.addOnFailureListener {
+                    Toast.makeText(this, "Error al subir imagen: ${it.message}", Toast.LENGTH_SHORT).show()
+                }
+
+            } else {
+                Toast.makeText(this, "Error al obtener el ID del usuario.", Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
+
 
 
 

@@ -1,6 +1,7 @@
 package com.petscanqr.app
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
@@ -50,7 +51,7 @@ class EscanearFragment : Fragment() {
     }
 
     // Maneja el resultado del escáner de QR
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
 
         val result: IntentResult? =
@@ -102,7 +103,68 @@ class EscanearFragment : Fragment() {
             // Escaneo cancelado o fallido
             // Puedes manejar esto según tus necesidades
         }
+    }*/
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+
+        val result: IntentResult? =
+            IntentIntegrator.parseActivityResult(requestCode, resultCode, data)
+
+        if (result != null && result.contents != null) {
+            // Aquí result.contents contiene el texto del código QR escaneado
+            val scannedUrl = result.contents
+
+            // Analiza la URL para obtener el ID de la mascota
+            val uri = Uri.parse(scannedUrl)
+            val mascotaId = uri.getQueryParameter("id") ?: ""
+
+            if (mascotaId.isNotEmpty()) {
+                // Consulta Firestore para obtener la información de la mascota escaneada
+                val db = FirebaseFirestore.getInstance()
+                val mascotasRef = db.collection("mascotas")
+
+                mascotasRef
+                    .document(mascotaId)  // Utiliza el ID del documento directamente
+                    .get()
+                    .addOnSuccessListener { document ->
+                        if (document != null) {
+                            val nombre = document.getString("nombre") ?: ""
+                            val fechaEscaneo = obtenerFechaActual()
+                            val imageUrl = document.getString("imageUrl") ?: ""
+
+                            val ownerId = document.getString("ownerId")
+
+                            if (ownerId == usuarioActualId) {
+                                // La mascota pertenece al usuario actual, redirige a MascotaDetailActivity
+                                val intent = Intent(context, MascotaDetailActivity::class.java)
+                                intent.putExtra("MASCOTA_ID", mascotaId)
+                                startActivity(intent)
+                            } else {
+                                // La mascota no pertenece al usuario actual, redirige a ContactDetailsActivity
+                                val intent = Intent(context, ContactDetailsActivity::class.java)
+                                intent.putExtra("MASCOTA_ID", mascotaId)
+
+                                // Agregar la mascota escaneada si es necesario
+                                agregarMascotaEscaneada(mascotaId, nombre, imageUrl)
+
+                                startActivity(intent)
+                            }
+                        } else {
+                            // El documento de la mascota no existe, maneja según tus necesidades
+                        }
+                    }
+                    .addOnFailureListener {
+                        // Error al obtener información de Firestore, maneja según tus necesidades
+                    }
+            } else {
+                // El ID de la mascota no es válido, maneja según tus necesidades
+            }
+        } else {
+            // Escaneo cancelado o fallido
+            // Puedes manejar esto según tus necesidades
+        }
     }
+
 
     fun iniciarEscaneo(view: View) {
         // Inicia el escáner de QR

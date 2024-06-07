@@ -11,8 +11,10 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 
-class MascotaAdapter(private val mascotas: MutableList<Mascota>, private val context: Context) : RecyclerView.Adapter<MascotaAdapter.MascotaViewHolder>() {
+class MascotaAdapter(private val mascotas: MutableList<com.petscanqr.app.dto.response.Mascota>, private val context: Context) : RecyclerView.Adapter<MascotaAdapter.MascotaViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MascotaViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.mascota_item_cardview, parent, false)
@@ -29,6 +31,9 @@ class MascotaAdapter(private val mascotas: MutableList<Mascota>, private val con
 
         Glide.with(context)
             .load(mascota.imageUrl)
+            .signature(ObjectKey(System.currentTimeMillis())) // Forzar la actualización de la imagen
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .centerCrop()
             .into(holder.mascotaImagen)
     }
@@ -50,7 +55,7 @@ class MascotaAdapter(private val mascotas: MutableList<Mascota>, private val con
         }
     }
 
-    fun updateData(newData: List<Mascota>) {
+    fun updateData(newData: List<com.petscanqr.app.dto.response.Mascota>) {
         this.mascotas.clear()
         this.mascotas.addAll(newData)
         notifyDataSetChanged()

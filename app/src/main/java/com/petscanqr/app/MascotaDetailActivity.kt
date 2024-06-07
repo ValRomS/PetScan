@@ -1,6 +1,7 @@
 package com.petscanqr.app
 
-import Mascota
+
+
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,9 +11,17 @@ import android.widget.PopupMenu
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.signature.ObjectKey
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.storage.FirebaseStorage
 import com.petscanqr.app.databinding.ActivityMascotaDetailBinding
+import com.petscanqr.app.dto.response.Mascota
+import com.petscanqr.app.dto.service.RetrofitClient
+
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MascotaDetailActivity : AppCompatActivity() {
 
@@ -27,8 +36,9 @@ class MascotaDetailActivity : AppCompatActivity() {
         binding = ActivityMascotaDetailBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        Log.d("MascotaDetailActivitiy", "ID de la mascota: $mascotaId")
+
         unitUI()
+        Log.d("MascotaDetailActivitiy", "ID de la mascota: $mascotaId")
     }
 
     private fun unitUI() {
@@ -81,6 +91,9 @@ class MascotaDetailActivity : AppCompatActivity() {
     private fun mostrarDatosMascota(mascota: Mascota) {
         Glide.with(this@MascotaDetailActivity)
             .load(mascota.imageUrl)
+            .signature(ObjectKey(System.currentTimeMillis())) // Forzar la actualización de la imagen
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
             .into(binding.mascotaImageView)
 
         binding.tvNombre.text = mascota.nombre
@@ -144,14 +157,14 @@ class MascotaDetailActivity : AppCompatActivity() {
         builder.setTitle("Confirmación")
         builder.setMessage("¿Estás seguro de que quieres eliminar a esta mascota?")
         builder.setPositiveButton("Eliminar") { _, _ ->
-            eliminarMascotaYImagen()
+            eliminarRegistroMascota()
         }
         builder.setNegativeButton("Cancelar", null)
         val dialog = builder.create()
         dialog.show()
     }
 
-    private fun eliminarMascotaYImagen() {
+    /*private fun eliminarMascotaYImagen() {
         Log.d("DeleteProcess", "Iniciando proceso de eliminación...")
         mascota?.imageUrl?.let {
             val storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(it)
@@ -162,9 +175,9 @@ class MascotaDetailActivity : AppCompatActivity() {
                 Log.e("DeleteImage", "Error al eliminar la imagen: ${it.message}")
             }
         } ?: Log.d("DeleteProcess", "imageUrl es null.")
-    }
+    }*/
 
-    private fun eliminarRegistroMascota() {
+   /* private fun eliminarRegistroMascota() {
         Log.d("DeleteRecord", "Iniciando eliminación del registro...")
         val db = FirebaseFirestore.getInstance()
         mascotaId?.let {
@@ -176,6 +189,32 @@ class MascotaDetailActivity : AppCompatActivity() {
             }.addOnFailureListener {
                 Log.e("DeleteRecord", "Error al eliminar el registro de la mascota: ${it.message}")
             }
+        } ?: Log.d("DeleteRecord", "mascotaId es null.")
+    }*/
+
+    private fun eliminarRegistroMascota() {
+        Log.d("DeleteRecord", "Iniciando eliminación del registro...")
+        mascotaId?.let {
+            Log.d("deletePet", "metodo {$mascotaId}")
+            val call = RetrofitClient.instance.eliminarMascota(it)
+            call.enqueue(object : Callback<Void> {
+                override fun onResponse(call: Call<Void>, response: Response<Void>) {
+                    if (response.isSuccessful) {
+                        Log.d("DeleteRecord", "Registro de mascota eliminado con éxito.")
+                        val intent = Intent(this@MascotaDetailActivity, HomeActivity::class.java)
+                        startActivity(intent)
+                        finish()
+                    } else {
+                        Log.e("DeleteRecord", "Error al eliminar el registro de la mascota: ${response.code()}")
+                        Toast.makeText(this@MascotaDetailActivity, "Error al eliminar la mascota: ${response.code()}", Toast.LENGTH_SHORT).show()
+                    }
+                }
+
+                override fun onFailure(call: Call<Void>, t: Throwable) {
+                    Log.e("DeleteRecord", "Error al eliminar el registro de la mascota: ${t.message}", t)
+                    Toast.makeText(this@MascotaDetailActivity, "Error al eliminar la mascota: ${t.message}", Toast.LENGTH_SHORT).show()
+                }
+            })
         } ?: Log.d("DeleteRecord", "mascotaId es null.")
     }
 
